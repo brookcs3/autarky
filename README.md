@@ -1,85 +1,40 @@
-<div align="center">
-<img src="https://raw.githubusercontent.com/pranshuchittora/autarky/master/docs/assets/Banner.png" />
-</div>
+# Autarky
 
-![npm](https://img.shields.io/npm/v/autarky)
-![downloads](https://img.shields.io/npm/dm/autarky?style=flat)
-![NPM](https://img.shields.io/npm/l/autarky)
-[![Dependabot](https://badgen.net/badge/Dependabot/enabled/green?icon=dependabot)](https://dependabot.com/)
-[![Maintainability](https://api.codeclimate.com/v1/badges/ca50bed68e1c8f074c5f/maintainability)](https://codeclimate.com/github/pranshuchittora/autarky/maintainability)
-![GitHub stars](https://img.shields.io/github/stars/pranshuchittora/autarky?style=social)
+**Autarky** is a command line tool that helps reclaim disk space by removing `node_modules` folders that haven't been touched in a while. It crawls the current directory, shows you outdated directories and deletes the ones you confirm.
 
-<br/>
-<div align="center" style="filter: drop-shadow(0px 0px 10px #222);">
-<img width="95%" src='https://raw.githubusercontent.com/pranshuchittora/autarky/master/docs/assets/Demo.gif'/>
-</div>
-
-## Installation
-
-```bash
-# npm
-npm i -g autarky
-
-#yarn
-yarn global add autarky
-```
+This repository contains an experimental implementation written in TypeScript using [Ink](https://github.com/vadimdemedes/ink) to render a React based terminal UI. State is managed with Redux and intensive file operations run inside child processes so the interface stays responsive.
 
 ## Usage
 
+1. Install dependencies and build the CLI:
+
 ```bash
-$> autarky
+npm install --ignore-scripts --legacy-peer-deps
+npm run build
 ```
 
-## Why autarky
+2. Run the CLI from the repository root:
 
-In today's world storage is comparatively costlier than compute. Majority of devs uses MacBooks and sadly MacBooks have pretty low storage (for base models). Hence filling up storage is quite often and we spend a lot of time picking stuff to be deleted.
+```bash
+node build/index.js
+```
 
-### Motivation
+Answer the prompts to select which `node_modules` folders you want to remove.
 
-It's 2019 and I got ran out of storage in my laptop after a thorough analysis I found out that the majority of the storage is occupied by `node_modules`. As each project have a separate node_modules (duplication despite the same version).
+## Highlight: Interactive CLI
 
-I also have a few projects which I touch once in a blue moon, hence they end up eating a lot of space. On the other hand, picking & removing `node_modules` manually is a tedious process. So I thought why not automate it.
+The most interesting part of the project is how a familiar React component tree is used to create an interactive terminal experience. Components dispatch Redux actions and receive state updates just like a web app, while child processes handle disk indexing and deletion without blocking input. See [`Interrogator/Questions.tsx`](src/ui/containers/Interrogator/Questions.tsx) for the flow of questions and background work.
 
-<div  align="center" style="filter: drop-shadow(0px 0px 10px #222);">
-<img width="70%"  src='https://raw.githubusercontent.com/pranshuchittora/autarky/master/docs/assets/heavy.png'/>
-</div>
+## Development
 
-### How it works
+Tests are written with Jest and can be run with:
 
-Autarky works by traversing all the child directories recursively relative to the current working directory (the place where you are executing autarky).
+```bash
+npm test
+```
 
-1. Enter the time in months. Node modules older than the given time will be shown.
-2. Select the `node_modules` which you want to delete.
-3. Confirm deletion.
-4. Done! (No need to pay for more storage.)
+Additional notes about the architecture and data flow can be found in [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
 
----
+## License
 
-## Internals
-
-Autarky is built with the latest open source technologies.
-
-1. UI - The user interface is written in React. Using the Ink's reconciler for rendering the react components.
-2. State Management - The challenge of sharing data b/w UI and the process is achieved using Redux.
-3. Heavy Computation - Large data crunching is done on child processes.
-
-### Building Blocks
-
-- [React](https://reactjs.org/)
-- [Redux](https://redux.js.org/)
-- [Ink](https://github.com/vadimdemedes/ink)
-- [moment](https://momentjs.com/)
-- [rimraf](https://github.com/isaacs/rimraf)
-- [chalk](https://github.com/chalk/chalk)
-
----
-
-Read [CONTRIBUTING Guide](./CONTRIBUTING.md)
-
-License MIT
-
-Author: Pranshu Chittora
-
-[Github](https://github.com/pranshuchittora/)
-[Twitter](https://twitter.com/pranshuchittora)
-[LinkedIn](https://www.linkedin.com/in/pranshuchittora/)
+MIT
